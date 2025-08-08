@@ -1,3 +1,5 @@
+import tkinter as tk
+
 class CustomButton(tk.Button):
     def __init__(self, master=None, text="", command=None, **kwargs):
         super().__init__(master, text=text, command=command, **kwargs)
