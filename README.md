@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Advanced Tkinter Game
 
 ## Overview
@@ -39,3 +40,6 @@ python src/main.py
 ## Credits
 - Developed by [Your Name]
 - Inspired by various classic games and tutorials on Tkinter.
+=======
+# Tkinter-Game
+>>>>>>> a681af88dd4d5d09385546b575bab4124a114efd
