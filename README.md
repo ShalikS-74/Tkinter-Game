@@ -34,12 +34,10 @@ python src/main.py
 
 ## Gameplay Instructions
 - Use the arrow keys to move the player.
-- Collect items and avoid enemies to progress through levels.
-- Access the main menu to start a new game or view credits.
+- Dodge the blue obstacles as long as possible.
+- First 5 seconds the player is invincible and player can change difficulty.
 
 ## Credits
-- Developed by [Your Name]
+- Developed by Shalik & Ai tools.
 - Inspired by various classic games and tutorials on Tkinter.
-=======
-# Tkinter-Game
->>>>>>> a681af88dd4d5d09385546b575bab4124a114efd
+
