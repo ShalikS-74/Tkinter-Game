@@ -1,16 +1,18 @@
-class ScreenManager:
+import tkinter as tk
+
+class ScreenManager(tk.Frame):
+    """Must inherit from tk.Frame to be a proper Tkinter widget"""
     def __init__(self, master):
-        self.master = master
+        super().__init__(master)
         self.screens = {}
 
-    def add_screen(self, name, screen):
-        self.screens[name] = screen
+    def add_screen(self, name, frame):
+        """Add a new screen to the manager"""
+        self.screens[name] = frame
+        frame.place(relwidth=1, relheight=1)
 
     def show_screen(self, name):
-        for screen in self.screens.values():
-            screen.pack_forget()
-        self.screens[name].pack(fill='both', expand=True)
-
-    def hide_screen(self, name):
-        if name in self.screens:
-            self.screens[name].pack_forget()
+        """Show the named screen"""
+        for screen_name, frame in self.screens.items():
+            frame.lower()
+        self.screens[name].lift()
