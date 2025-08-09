@@ -12,12 +12,23 @@ class GameEngine:
         self.mouse_down = False
         self.canvas_width = 400
         self.canvas_height = 300
-        self.player_size = 30
+        if self.difficulty == "hard":
+            self.player_size = 45
+            self.invincibility_duration = 2
+            self.enemy_speed = 2
+        elif self.difficulty == "impossible":
+            self.player_size = 30
+            self.invincibility_duration = 1
+            self.enemy_speed = 4  # Twice the normal speed
+        else:
+            self.player_size = 30
+            self.invincibility_duration = 5 if self.difficulty == "easy" else 5
+            self.enemy_speed = 2
         self.player_pos = [180, 130]
         canvas.bind("<ButtonPress-1>", self.on_mouse_down)
         canvas.bind("<ButtonRelease-1>", self.on_mouse_up)
         canvas.bind("<Motion>", self.on_mouse_move)
-        self.spawn_enemies(5)
+        self.spawn_enemies(self.enemy_count)
 
     def start(self):
         self.canvas.delete("all")
@@ -26,7 +37,7 @@ class GameEngine:
         self.player = self.canvas.create_rectangle(
             self.player_pos[0], self.player_pos[1],
             self.player_pos[0] + self.player_size, self.player_pos[1] + self.player_size,
-            fill="red"
+            fill="red", outline="yellow", width=3  # Start with yellow border
         )
         self.survival_text = self.canvas.create_text(
             70, 20, text="Time: 0.00s", fill="black", font=("Arial", 16)
@@ -34,14 +45,16 @@ class GameEngine:
         self.start_time = time.time()
         self.running = True
         self.enemy_speed = 2
+        self.blink_state = True  # For blinking border
         self.game_loop()
 
     def spawn_enemies(self, count):
         self.enemies = []
         self.enemy_dirs = []
         min_distance = 80  # Minimum distance from red block
-        for _ in range(count):
-            shape = random.choice(["rectangle", "square"])
+        for i in range(count):
+            # Impossible mode: mostly rectangles
+            shape = "rectangle" if self.difficulty == "impossible" or i % 2 == 0 else "square"
             if shape == "rectangle":
                 max_x = self.canvas_width - self.enemy_size
                 max_y = self.canvas_height - self.enemy_size * 2  # Rectangle is taller
@@ -69,7 +82,10 @@ class GameEngine:
                     outline="blue", width=3, fill="blue"
                 )
             self.enemies.append(enemy)
-            self.enemy_dirs.append([random.choice([-1, 1]), random.choice([-1, 1])])
+            # Random direction, ensure not zero
+            dir_x = random.choice([-1, 1])
+            dir_y = random.choice([-1, 1])
+            self.enemy_dirs.append([dir_x, dir_y])
 
     def on_mouse_down(self, event):
         self.mouse_down = True
@@ -96,8 +112,9 @@ class GameEngine:
         self.move_enemies_random()
         self.update_time()
         self.increase_difficulty()
-        # Prevent death in first 5 seconds
-        if self.survival_time >= 5 and self.check_collision():
+        self.update_player_border()
+        # Invincibility duration based on difficulty
+        if self.survival_time >= self.invincibility_duration and self.check_collision():
             self.game_over()
             return
         self.canvas.after(50, self.game_loop)
@@ -141,9 +158,16 @@ class GameEngine:
         self.canvas.itemconfig(self.survival_text, text=f"Time: {self.survival_time:.2f}s", fill="black")
 
     def increase_difficulty(self):
-        # Easy: every 2.5 seconds, Medium: every 2 seconds
-        interval = 2 if self.difficulty == "medium" else 2.5
-        self.enemy_speed = 2 + int(self.survival_time // interval)
+        # Impossible: every 1 second, Hard: 1.5s, Medium: 2s, Easy: 2.5s
+        if self.difficulty == "impossible":
+            interval = 1
+        elif self.difficulty == "hard":
+            interval = 1.5
+        elif self.difficulty == "medium":
+            interval = 2
+        else:
+            interval = 2.5
+        self.enemy_speed = (4 if self.difficulty == "impossible" else 2) + int(self.survival_time // interval)
 
     def game_over(self):
         self.running = False
@@ -156,3 +180,23 @@ class GameEngine:
 
     def reset_game(self):
         self.start()  # Do NOT increase enemy_count
+
+    def update_player_border(self):
+        # Invincibility border logic based on difficulty
+        if self.survival_time < self.invincibility_duration - 2 and self.invincibility_duration > 2:
+            self.canvas.itemconfig(self.player, outline="yellow", width=3)
+        elif self.survival_time < self.invincibility_duration:
+            # Last 2 seconds of invincibility: blinking yellow border
+            # Blink every 200ms
+            if int((self.survival_time - (self.invincibility_duration - 2)) * 5) % 2 == 0:
+                self.canvas.itemconfig(self.player, outline="yellow", width=3)
+            else:
+                self.canvas.itemconfig(self.player, outline="", width=0)
+        elif self.survival_time < self.invincibility_duration and self.invincibility_duration <= 2:
+            # For impossible mode, blink for the whole invincibility duration
+            if int(self.survival_time * 5) % 2 == 0:
+                self.canvas.itemconfig(self.player, outline="yellow", width=3)
+            else:
+                self.canvas.itemconfig(self.player, outline="", width=0)
+        else:
+            self.canvas.itemconfig(self.player, outline="", width=0)
