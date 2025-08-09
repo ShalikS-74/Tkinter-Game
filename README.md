@@ -6,8 +6,9 @@ Move the red block with your mouse and avoid the blue blocks for as long as poss
 ## Features
 
 - **Difficulty Selection:** Easy, Medium, Hard, and Impossible modes.
-- **Invincibility:** Temporary invincibility at the start of each game (duration depends on difficulty).
-- **Dynamic Speed:** Blue blocks get faster as you survive longer.
+- **Impossible Mode:** 5 blue rectangles and 2 blue squares, fast speed, 1 second of invincibility, and a large red block.
+- **Invincibility:** Temporary invincibility at the start of each game (duration depends on difficulty), with a yellow border that blinks in the last seconds.
+- **Dynamic Speed:** Blue blocks get faster as you survive longer, with intervals based on difficulty.
 - **Mouse Controls:** Hold and drag the mouse to move the red block.
 - **Bouncing Blue Blocks:** Blue squares and rectangles bounce off the borders and never get stuck.
 - **Game Over & Restart:** The game automatically restarts after you lose.
@@ -15,12 +16,12 @@ Move the red block with your mouse and avoid the blue blocks for as long as poss
 
 ## Difficulty Modes
 
-| Mode        | Blue Blocks | Red Block Size | Invincibility | Speed Increase Interval | Starting Speed | Notes                       |
-|-------------|------------|---------------|---------------|------------------------|---------------|-----------------------------|
-| Easy        | 3          | Small         | 5 seconds     | 2.5 seconds            | Normal (2)    |                            |
-| Medium      | 5          | Small         | 5 seconds     | 2 seconds              | Normal (2)    |                            |
-| Hard        | 5          | Large         | 2 seconds     | 1.5 seconds            | Normal (2)    |                            |
-| Impossible  | 8 (mostly rectangles) | Small | 1 second      | 1 second               | Fast (4)      | Most blocks are rectangles  |
+| Mode        | Blue Blocks         | Red Block Size | Invincibility | Speed Increase Interval | Starting Speed | Notes                      |
+|-------------|---------------------|---------------|---------------|------------------------|---------------|-------------------------------|
+| Easy        | 3 (mix)             | Small         | 5 seconds     | 2.5 seconds            | 2             |                               |
+| Medium      | 5 (mix)             | Small         | 5 seconds     | 2 seconds              | 2             |                               |
+| Hard        | 5 (mix)             | Large         | 2 seconds     | 1.5 seconds            | 2             |Size of player block increased |
+| Impossible  | 7 (mix)             | Large         | 1 second      | 1 second               | 4             | Most blocks are rectangles    |
 
 ## How to Play
 
