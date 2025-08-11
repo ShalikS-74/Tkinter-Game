@@ -1,4 +1,4 @@
-# Advanced Tkinter Red Block Game
+# Tkinter Red Block Game
 
 A challenging survival game inspired by the classic "Red Block Game".  
 Move the red block with your mouse and avoid the blue blocks for as long as possible!
